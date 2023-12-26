@@ -6,19 +6,33 @@ import { Event } from './entities/event.entity';
 
 @Injectable()
 export class EventsService {
-  create(createEventDto: CreateEventDto) {
-    return 'This action adds a new event';
+  constructor(
+    @InjectRepository(Event)
+    private readonly eventRepository: Repository<Event>,
+  ) {}
+
+  async create(createEventDto: CreateEventDto): Promise<Event> {
+    const event = this.eventRepository.create(createEventDto);
+    return await this.eventRepository.save(event);
   }
 
-  findAll() {
-    return `This action returns all events`;
+  async findAll(): Promise<Event[]> {
+    return await this.eventRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
+  async findOne(id: number): Promise<Event> {
+    const event = await this.eventRepository.findOne({ where: { id } });
+    if (!event) {
+      throw new Error(`Event ${id} not found`);
+    }
+    return event;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} event`;
+  async remove(id: number): Promise<{ affected: number }> {
+    const result = await this.eventRepository.delete(id);
+    if (result.affected === 0) {
+      throw new Error(`Event ${id} not found`);
+    }
+    return { affected: result.affected };
   }
 }
