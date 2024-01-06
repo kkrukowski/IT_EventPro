@@ -13,7 +13,7 @@ import { EventsService } from './events.service';
 
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(private eventsService: EventsService) {}
 
   @Post()
   create(@Body() createEventDto: CreateEventDto): Promise<Event> {

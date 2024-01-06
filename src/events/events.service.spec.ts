@@ -1,7 +1,6 @@
-import { DeepMocked, createMock } from '@golevelup/ts-jest';
+import { createMock } from '@golevelup/ts-jest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { create } from 'domain';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { Event } from './entities/event.entity';
