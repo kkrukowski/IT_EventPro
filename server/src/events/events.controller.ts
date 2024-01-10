@@ -17,7 +17,11 @@ export class EventsController {
 
   @Post()
   create(@Body() createEventDto: CreateEventDto): Promise<Event> {
-    return this.eventsService.create(createEventDto);
+    try {
+      return this.eventsService.create(createEventDto);
+    } catch (error) {
+      throw error.message;
+    }
   }
 
   @Get()

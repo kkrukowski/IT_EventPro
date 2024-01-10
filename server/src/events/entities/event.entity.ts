@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('events')
 export class Event {
@@ -8,7 +16,7 @@ export class Event {
   @Column({ name: 'name', length: 100, nullable: false })
   name: string;
 
-  @Column({ name: 'description', length: 255, nullable: true })
+  @Column({ name: 'description', length: 255, nullable: false })
   description: string;
 
   @Column({ name: 'when', type: 'date', nullable: false })
@@ -19,4 +27,12 @@ export class Event {
 
   @Column({ name: 'createdAt', type: 'date', nullable: false })
   createdAt: Date;
+
+  @OneToOne(() => User, (user) => user.id)
+  @JoinColumn({ name: 'ownerId' })
+  owner: User;
+
+  @OneToMany(() => User, (user) => user.id)
+  @JoinColumn({ name: 'participantsId' })
+  participants: User[];
 }

@@ -13,4 +13,9 @@ export class CreateEventDto {
 
   @IsNotEmpty({ message: 'Adres jest wymagany' })
   address: string;
+
+  @IsNotEmpty({ message: 'Właściciel jest wymagany' })
+  @IsNumber({}, { message: 'Właściciel musi być liczbą' })
+  @IsPositive({ message: 'Właściciel musi być liczbą dodatnią' })
+  ownerId: number;
 }

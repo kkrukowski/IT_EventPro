@@ -10,11 +10,14 @@ describe('EventsService', () => {
   let service: EventsService;
   let mockRepository = createMock<Repository<Event>>();
   const mockEvent = new Event();
+  const ownerId = 1;
+  const participantId = 2;
   const createEventDto: CreateEventDto = {
     name: 'Test Event',
     description: 'Test Event Description',
     when: new Date(),
     address: '123 Test St',
+    ownerId: ownerId,
   };
 
   beforeEach(async () => {
@@ -42,6 +45,13 @@ describe('EventsService', () => {
       mockRepository.save.mockResolvedValue(mockEvent);
       const result = await service.create(createEventDto);
       expect(result).toEqual(mockEvent);
+    });
+
+    it('should throw an error when data is missing', async () => {
+      mockRepository.create.mockReturnValue(mockEvent);
+      mockRepository.save.mockResolvedValue(mockEvent);
+      const result = service.create({} as any);
+      await expect(result).rejects.toThrow();
     });
   });
 

@@ -22,10 +22,4 @@ export class User {
 
   @Column({ name: 'createdAt', type: 'date', nullable: false })
   createdAt: Date;
-
-  //   @Column({ name: 'organization_id', length: 100, nullable: true })
-  //   organization_id: number;
-
-  //   @Column({ name: 'events_id', length: 100, nullable: true })
-  //   events_id: number;
 }

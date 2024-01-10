@@ -57,6 +57,14 @@ describe('UsersService', () => {
     });
   });
 
+  describe('findAll', () => {
+    it('should return an array of users', async () => {
+      mockRepository.find.mockResolvedValue([mockUser]);
+      const result = await service.findAll();
+      expect(result).toEqual([mockUser]);
+    });
+  });
+
   describe('updateUser', () => {
     it('should update a user', async () => {
       mockRepository.findOne.mockResolvedValue(mockUser);

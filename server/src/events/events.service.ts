@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -16,8 +16,21 @@ export class EventsService {
     return await this.eventRepository.save(event);
   }
 
+  async addParticipant(id: number, userId: number): Promise<Event> {
+    const event = await this.eventRepository.findOne({ where: { id } });
+    if (!event) {
+      throw new Error(`Event ${id} not found`);
+    }
+    event.participants.push({ id: userId } as any);
+    return await this.eventRepository.save(event);
+  }
+
   async findAll(): Promise<Event[]> {
-    return await this.eventRepository.find();
+    const events = await this.eventRepository.find();
+    if (events.length === 0) {
+      throw new NotFoundException('Events not found');
+    }
+    return events;
   }
 
   async findOne(id: number): Promise<Event> {
