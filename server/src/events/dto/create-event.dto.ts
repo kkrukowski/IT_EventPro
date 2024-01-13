@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { User } from '../../users/entities/user.entity';
 
 export class CreateEventDto {
   @IsNotEmpty({ message: 'Nazwa jest wymagana' })
@@ -17,5 +18,7 @@ export class CreateEventDto {
   @IsNotEmpty({ message: 'Właściciel jest wymagany' })
   @IsNumber({}, { message: 'Właściciel musi być liczbą' })
   @IsPositive({ message: 'Właściciel musi być liczbą dodatnią' })
-  ownerId: number;
+  owner: User;
+
+  createdAt: Date;
 }

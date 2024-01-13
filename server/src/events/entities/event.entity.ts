@@ -28,8 +28,7 @@ export class Event {
   @Column({ name: 'createdAt', type: 'date', nullable: false })
   createdAt: Date;
 
-  @OneToOne(() => User, (user) => user.id)
-  @JoinColumn({ name: 'ownerId' })
+  @OneToOne(() => User)
   owner: User;
 
   @OneToMany(() => User, (user) => user.id)

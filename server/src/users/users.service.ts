@@ -12,6 +12,8 @@ export class UsersService {
   ) {}
 
   create(createUserDto: CreateUserDto): Promise<User> {
+    const nowDate = new Date();
+    createUserDto.createdAt = nowDate;
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }

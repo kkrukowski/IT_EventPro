@@ -12,6 +12,8 @@ export class EventsService {
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
+    const nowDate = new Date();
+    createEventDto.createdAt = nowDate;
     const event = this.eventRepository.create(createEventDto);
     return await this.eventRepository.save(event);
   }

@@ -16,5 +16,8 @@ export class CreateUserDto {
   password: string;
 
   @IsNotEmpty({ message: 'Rola jest wymagana' })
-  role: string;
+  role: 'USER' | 'ADMIN';
+
+  @IsNotEmpty({ message: 'Data utworzenia jest wymagana' })
+  createdAt: Date;
 }

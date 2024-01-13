@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { Event } from './entities/event.entity';
@@ -16,12 +18,8 @@ export class EventsController {
   constructor(private eventsService: EventsService) {}
 
   @Post()
-  create(@Body() createEventDto: CreateEventDto): Promise<Event> {
-    try {
-      return this.eventsService.create(createEventDto);
-    } catch (error) {
-      throw error.message;
-    }
+  create(@Body(ValidationPipe) createEventDto: CreateEventDto): Promise<Event> {
+    return this.eventsService.create(createEventDto);
   }
 
   @Get()
@@ -30,12 +28,12 @@ export class EventsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Event> {
-    return this.eventsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<Event> {
+    return this.eventsService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.eventsService.remove(+id);
   }
 }
