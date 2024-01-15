@@ -16,7 +16,8 @@ describe('UsersService', () => {
     surname: 'Surname',
     email: 'test@test.com',
     password: 'test1234',
-    role: 'user',
+    role: 'USER',
+    createdAt: new Date(),
   };
   const updateUserDto: UpdateUserDto = {
     email: 'new@test.com',

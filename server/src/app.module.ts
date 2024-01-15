@@ -5,9 +5,10 @@ import { AppService } from './app.service';
 import { databaseConfig } from './database/database.config';
 import { EventsModule } from './events/events.module';
 import { UsersModule } from './users/users.module';
+import { OrganizationsModule } from './organizations/organizations.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(databaseConfig), EventsModule, UsersModule],
+  imports: [TypeOrmModule.forRoot(databaseConfig), EventsModule, UsersModule, OrganizationsModule],
   controllers: [AppController],
   providers: [AppService],
 })
