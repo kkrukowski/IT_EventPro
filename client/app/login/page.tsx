@@ -5,11 +5,13 @@ import { HiKey, HiMail } from "react-icons/hi";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
+import { createAuthToken } from "../actions";
 import Heading from "../components/Heading";
 
 const schema = yup.object().shape({
@@ -39,7 +41,20 @@ export default function Login() {
   } = form;
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    axios.get(process.env.NEXT_PUBLIC_API_URL + "/users/", data).then(
+    const userData = data;
+    try {
+      const response = await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + "/auth/login",
+        userData
+      );
+      if (response.status === 200) {
+        const accessToken = response.data.access_token;
+        createAuthToken(accessToken);
+        router.push("/profile");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
