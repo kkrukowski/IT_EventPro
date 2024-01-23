@@ -49,8 +49,10 @@ export default function Login() {
       );
       if (response.status === 200) {
         const accessToken = response.data.access_token;
-        createAuthToken(accessToken);
-        router.push("/profile");
+        const token = await createAuthToken(accessToken);
+        if (token) {
+          router.push("/profile");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -58,7 +60,7 @@ export default function Login() {
   };
 
   return (
-    <section className="w-full h-full flex flex-col justify-center items-center py-10">
+    <main className="w-full h-full flex flex-1 flex-col justify-center items-center py-10">
       <Image
         src="/logo.png"
         width="256"
@@ -124,6 +126,6 @@ export default function Login() {
           </p>
         </form>
       </div>
-    </section>
+    </main>
   );
 }
