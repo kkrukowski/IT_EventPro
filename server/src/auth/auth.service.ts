@@ -16,9 +16,20 @@ export class AuthService {
     if (bcrypt.compareSync(signInDto.password, user.password) === false) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const payload = { email: user.email, sub: user.id };
+    const payload = {
+      email: user.email,
+      sub: user.id,
+    };
+    const userInfo = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      surname: user.surname,
+      role: user.role,
+    };
     return {
       access_token: await this.jwtService.signAsync(payload),
+      userInfo,
     };
   }
 }

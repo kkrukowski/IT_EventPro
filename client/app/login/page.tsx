@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
-import { createAuthToken } from "../actions";
+import { LoginUser } from "../api/auth/routes";
 import Heading from "../components/Heading";
 
 const schema = yup.object().shape({
@@ -43,16 +43,10 @@ export default function Login() {
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const userData = data;
     try {
-      const response = await axios.post(
-        process.env.NEXT_PUBLIC_API_URL + "/auth/login",
-        userData
-      );
-      if (response.status === 200) {
-        const accessToken = response.data.access_token;
-        const token = await createAuthToken(accessToken);
-        if (token) {
-          router.push("/profile");
-        }
+      const loginUser = await LoginUser(userData);
+      console.log(loginUser);
+      if (loginUser) {
+        router.push("/profile");
       }
     } catch (error) {
       console.log(error);

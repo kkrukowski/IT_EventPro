@@ -1,32 +1,34 @@
-import axios from "axios";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export async function middleware(
   req: NextRequest
 ): Promise<Promise<NextResponse> | void> {
-  const authToken = req.cookies.get("authToken");
+  const authToken = req.cookies.get("authToken")?.value || "";
 
   if (!authToken) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  console.log(authToken.value);
-  const config = {
-    headers: {
-      Authorization: `Bearer ${authToken.value}`,
-    },
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL + "/auth/profile";
+
+  const headers = {
+    Authorization: `Bearer ${authToken}`,
   };
-  console.log(process.env.NEXT_PUBLIC_API_URL + "/auth/profile");
-  await axios
-    .get(process.env.NEXT_PUBLIC_API_URL + "/auth/profile", config)
+
+  const res = await fetch(apiUrl, { headers, cache: "force-cache" })
     .then((res) => {
-      console.log(res);
+      if (res.status === 200) {
+        return NextResponse.next();
+      }
     })
     .catch((err) => {
       console.log(err);
-      return NextResponse.redirect(new URL("/login", req.url));
     });
+
+  if (!res) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
 }
 
 export const config = {
