@@ -6,7 +6,7 @@ export default function ProfileLayoput({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex flex-1 h-full flex-col">
+    <main className="flex flex-1 min-h-screen h-full flex-col">
       <NavbarElem />
       {children}
     </main>

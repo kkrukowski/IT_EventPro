@@ -86,7 +86,7 @@ export default function Register() {
           }
         })
         .catch((err) => {
-          console.log(err.response.data.message);
+          console.log(err.response);
         });
     }
   };

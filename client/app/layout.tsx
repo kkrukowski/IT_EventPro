@@ -19,7 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl">
-      <body className={"flex flex-1 h-full flex-col " + inter.className}>
+      <body className={"flex flex-1 min-h-screen flex-col " + inter.className}>
+        <NavbarElem />
         {children}
         <Footer container className="rounded-none bg-gray-800">
           <Footer.Copyright

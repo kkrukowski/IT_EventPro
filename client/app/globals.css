@@ -23,4 +23,5 @@ body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background));
   width: 100vw;
+  height: 100%;
 }

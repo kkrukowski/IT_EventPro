@@ -66,7 +66,7 @@ export default function Profile() {
   };
 
   return (
-    <section className="w-full h-full flex flex-col justify-center items-center py-10">
+    <section className="w-full h-full flex flex-col justify-center items-center p-10">
       <div className="w-fit rounded-xl bg-gray-800 p-10">
         <Heading title="Profil" />
         <form
