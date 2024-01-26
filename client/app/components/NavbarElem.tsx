@@ -4,7 +4,7 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function NavbarElem() {
+export default function NavbarElem({ userData }: { userData: any }) {
   return (
     <Navbar className="bg-gray-800">
       <Navbar.Brand as={Link} href="/">
@@ -30,9 +30,11 @@ export default function NavbarElem() {
           }
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm">
+              {userData.name} {userData.surname}
+            </span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              {userData.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item>Profil</Dropdown.Item>

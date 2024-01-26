@@ -2,6 +2,7 @@ import { Footer } from "flowbite-react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/navigation";
+import { getUserData } from "./actions";
 import NavbarElem from "./components/NavbarElem";
 import "./globals.css";
 
@@ -20,7 +21,6 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body className={"flex flex-1 min-h-screen flex-col " + inter.className}>
-        <NavbarElem />
         {children}
         <Footer container className="rounded-none bg-gray-800">
           <Footer.Copyright

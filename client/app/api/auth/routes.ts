@@ -1,6 +1,6 @@
 "use server";
 
-import { createAuthToken } from "../../actions";
+import { createAuthToken, storeUserData } from "../../actions";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -16,7 +16,12 @@ export const LoginUser = async (userData: any) => {
     if (response.status === 200) {
       const data = await response.json();
       const token = await createAuthToken(data.access_token);
+
       if (token) {
+        const storeData = await storeUserData(data.userInfo);
+        if (!storeData) {
+          return false;
+        }
         return true;
       }
     }
