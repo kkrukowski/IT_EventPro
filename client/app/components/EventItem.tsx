@@ -4,6 +4,7 @@ import { Button } from "flowbite-react";
 import { downloadPdf } from "../api/events/routes";
 
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function EventItem(props: {
   eventTitle: string;
@@ -12,13 +13,18 @@ export default function EventItem(props: {
   eventLoc: string;
 }) {
   const downloadPdfHandler = async () => {
-    const pdfData = await downloadPdf();
-    console.log(pdfData);
-    if (pdfData) {
-      const fileName = pdfData;
-      console.log(fileName);
-      // const url = "http://localhost:5000/tickets/ticket.pdf";
-      // window.open(url, "_blank");
+    const ticketData = {
+      eventTitle: props.eventTitle,
+      eventDesc: props.eventDesc,
+      eventDate: props.eventDate,
+      eventLoc: props.eventLoc,
+      userName: "Kamil",
+      userSurname: "Kowalski",
+    };
+    const pdfFileName = await downloadPdf(ticketData);
+    if (pdfFileName) {
+      const url = `http://localhost:5000/tickets/${pdfFileName}`;
+      window.open(url, "_blank");
     }
   };
 

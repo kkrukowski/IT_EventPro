@@ -33,12 +33,8 @@ export class EventsController {
 
   // Generate pdf based on event id
   @Post('pdf')
-  async generatePdf(@Body() userData: any, @Res() res: Response): Promise<any> {
-    const pdfFileName = await this.eventsService.generatePdf(userData);
-    console.log('pdfFileName', pdfFileName);
-    if (pdfFileName !== undefined) {
-      return pdfFileName;
-    }
+  async generatePdf(@Body() eventData: any): Promise<any> {
+    return this.eventsService.generatePdf(eventData);
   }
 
   @Get(':id')

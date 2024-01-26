@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as PDFDocument from 'pdfkit';
 import ShortUniqueId from 'short-unique-id';
 import { Repository } from 'typeorm';
@@ -49,30 +48,37 @@ export class EventsService {
     return event;
   }
 
-  async generatePdf(userData: any): Promise<any> {
+  async generatePdf(eventData: any): Promise<any> {
     try {
       const doc = new PDFDocument();
 
-      doc.text(`Hello, ${userData.eventName}!`);
+      doc.font('Times-Roman');
+      doc.fontSize(25).text('Bilet na wydarzenie!', 100, 50);
+      doc.fontSize(14).text(`Wydarzenie: ${eventData.eventTitle}`, 100, 100);
+      doc.text(`Opis wydarzenia: ${eventData.eventDesc}`, 100, 150);
+      doc.text(`Data wydarzenia: ${eventData.eventDate}`, 100, 200);
+      doc.text(`Lokalizacja: ${eventData.eventLoc}`, 100, 250);
+      doc.text(
+        `Bilet dla: ${eventData.userName} ${eventData.userSurname}`,
+        100,
+        300,
+      );
 
       const randomId = randomUUID();
       const fileName =
-        `${userData.eventName}-${userData.name}-${userData.surname}-${randomId}.pdf`.replace(
+        `${eventData.eventTitle}-${eventData.userName}-${eventData.userSurname}-${randomId}.pdf`.replace(
           ' ',
           '-',
         );
-
-      console.log(fileName);
       const stream = fs.createWriteStream(`tickets/${fileName}`);
       doc.pipe(stream);
       doc.end();
-
       return fileName;
     } catch (error) {
       console.log('error', error);
       throw error;
     } finally {
-      console.log('finally');
+      console.log('PDF Generated');
     }
   }
 
