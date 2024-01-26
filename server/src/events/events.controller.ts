@@ -7,8 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Res,
+  StreamableFile,
   ValidationPipe,
 } from '@nestjs/common';
+import { Response } from 'express';
+import { createReadStream } from 'fs';
 import { CreateEventDto } from './dto/create-event.dto';
 import { Event } from './entities/event.entity';
 import { EventsService } from './events.service';
@@ -25,6 +29,16 @@ export class EventsController {
   @Get()
   findAll(): Promise<Event[]> {
     return this.eventsService.findAll();
+  }
+
+  // Generate pdf based on event id
+  @Post('pdf')
+  async generatePdf(@Body() userData: any, @Res() res: Response): Promise<any> {
+    const pdfFileName = await this.eventsService.generatePdf(userData);
+    console.log('pdfFileName', pdfFileName);
+    if (pdfFileName !== undefined) {
+      return pdfFileName;
+    }
   }
 
   @Get(':id')
