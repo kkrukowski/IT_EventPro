@@ -32,4 +32,23 @@ export class AuthService {
       userInfo,
     };
   }
+
+  async signUp(signUpDto: any): Promise<any> {
+    const user = await this.usersService.create(signUpDto);
+    const payload = {
+      email: user.email,
+      sub: user.id,
+    };
+    const userInfo = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      surname: user.surname,
+      role: user.role,
+    };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+      userInfo,
+    };
+  }
 }

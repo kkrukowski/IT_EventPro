@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
+import { RegisterUser } from "../api/auth/routes";
 import Heading from "../components/Heading";
 
 const schema = yup.object().shape({
@@ -58,7 +59,7 @@ export default function RegisterForm() {
     formState: { errors },
   } = form;
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (role.role === "") {
       setRole({
         role: "",
@@ -76,18 +77,14 @@ export default function RegisterForm() {
         createdAt: new Date(),
       };
 
-      console.log(process.env.NEXT_PUBLIC_API_URL + "/users");
-      axios
-        .post(process.env.NEXT_PUBLIC_API_URL + "/users", userData)
-        .then((res) => {
-          if (res.status === 201) {
-            console.log("User created");
-            router.push("/profile");
-          }
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
+      try {
+        const registerUser = await RegisterUser(userData);
+        if (registerUser) {
+          router.push("/profile");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

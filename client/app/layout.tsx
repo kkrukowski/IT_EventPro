@@ -1,7 +1,7 @@
 import { Footer } from "flowbite-react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { useRouter } from "next/navigation";
+import { headers } from "next/headers";
 import { getUserData } from "./actions";
 import NavbarElem from "./components/NavbarElem";
 import "./globals.css";
@@ -13,14 +13,23 @@ export const metadata: Metadata = {
   description: "Projekt zaliczeniowy IT",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const userData = await getUserData();
+  const headersList = headers();
+  const subpageUrl = headersList.get("referer");
+  const host = headersList.get("host");
+  const urlNoHost = subpageUrl?.replace("http://" + host, "");
+
   return (
     <html lang="pl">
-      <body className={"flex flex-1 min-h-screen flex-col " + inter.className}>
+      <body className={"flex flex-1 max-w-screen flex-col " + inter.className}>
+        {urlNoHost !== "/login" && urlNoHost !== "/register" && (
+          <NavbarElem userData={userData} />
+        )}
         {children}
         <Footer container className="rounded-none bg-gray-800">
           <Footer.Copyright

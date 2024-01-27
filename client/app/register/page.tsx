@@ -6,7 +6,7 @@ import RegisterForm from "../components/RegisterForm";
 
 export default function Register() {
   // redirect to profile if user is logged in
-  if (cookies().get("authToken")) {
+  if (cookies().get("authToken") !== undefined) {
     redirect("/profile");
   }
 

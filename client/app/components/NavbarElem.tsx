@@ -3,8 +3,20 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import Image from "next/image";
 import Link from "next/link";
+import { LogoutUser } from "../api/auth/routes";
 
 export default function NavbarElem({ userData }: { userData: any }) {
+  const goToProfile = () => {
+    window.location.href = "/profile";
+  };
+
+  const logoutHandler = async () => {
+    const logout = await LogoutUser();
+    if (logout) {
+      window.location.href = "/";
+    }
+  };
+
   return (
     <Navbar className="bg-gray-800">
       <Navbar.Brand as={Link} href="/">
@@ -37,9 +49,9 @@ export default function NavbarElem({ userData }: { userData: any }) {
               {userData.email}
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Profil</Dropdown.Item>
+          <Dropdown.Item onClick={goToProfile}>Profil</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item>Wyloguj się</Dropdown.Item>
+          <Dropdown.Item onClick={logoutHandler}>Wyloguj się</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>

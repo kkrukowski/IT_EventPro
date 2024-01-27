@@ -6,7 +6,7 @@ import LoginForm from "../components/LoginForm";
 
 export default function Login() {
   // redirect to profile if user is logged in
-  if (cookies().get("authToken")) {
+  if (cookies().get("authToken") !== undefined) {
     redirect("/profile");
   }
 

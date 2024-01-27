@@ -41,3 +41,11 @@ export async function getUserData() {
   };
   return userData;
 }
+
+export async function removeUserData() {
+  cookies().delete("userName");
+  cookies().delete("userSurname");
+  cookies().delete("userEmail");
+  cookies().delete("authToken");
+  return true;
+}
