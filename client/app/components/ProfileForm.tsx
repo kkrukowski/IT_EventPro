@@ -163,7 +163,7 @@ export default function ProfileForm({ userData }: { userData: any }) {
           id="role"
           type="text"
           icon={HiUser}
-          placeholder="User"
+          placeholder={userData.role == "ADMIN" ? "Organizator" : "Użytkownik"}
           disabled
         />
       </div>

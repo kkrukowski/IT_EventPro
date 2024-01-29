@@ -19,17 +19,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const userData = await getUserData();
-  const headersList = headers();
-  const subpageUrl = headersList.get("referer");
-  const host = headersList.get("host");
-  const urlNoHost = subpageUrl?.replace("http://" + host, "");
 
   return (
     <html lang="pl">
       <body className={"flex flex-1 max-w-screen flex-col " + inter.className}>
-        {urlNoHost !== "/login" && urlNoHost !== "/register" && (
-          <NavbarElem userData={userData} />
-        )}
+        {userData.name !== undefined && <NavbarElem userData={userData} />}
         {children}
         <Footer container className="rounded-none bg-gray-800">
           <Footer.Copyright

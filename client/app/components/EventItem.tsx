@@ -11,6 +11,7 @@ export default function EventItem(props: {
   eventDesc: string;
   eventDate: string;
   eventLoc: string;
+  userData: any;
 }) {
   const downloadPdfHandler = async () => {
     const ticketData = {
@@ -29,7 +30,7 @@ export default function EventItem(props: {
   };
 
   return (
-    <div className="flex h-fit w-[800px] mb-5 bg-gray-800 p-4 rounded-3xl">
+    <div className="flex h-fit w-[800px] bg-gray-800 p-4 rounded-3xl">
       <Image
         src="/thumbnail.jpg"
         alt="Event thumbnail"
@@ -45,16 +46,18 @@ export default function EventItem(props: {
           <h2 className="text-2xl font-bold">{props.eventTitle}</h2>
           <p>{props.eventDesc}</p>
         </div>
-        <div className="flex">
-          <Button className="w-fit mt-5 mr-5">Zapisz się</Button>
-          <Button
-            color="blue"
-            className="w-fit mt-5"
-            onClick={downloadPdfHandler}
-          >
-            Pobierz bilet
-          </Button>
-        </div>
+        {props.userData?.role == "USER" && (
+          <div className="flex">
+            <Button className="w-fit mt-5 mr-5">Zapisz się</Button>
+            <Button
+              color="blue"
+              className="w-fit mt-5"
+              onClick={downloadPdfHandler}
+            >
+              Pobierz bilet
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

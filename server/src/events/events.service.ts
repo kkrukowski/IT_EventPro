@@ -23,14 +23,14 @@ export class EventsService {
     return await this.eventRepository.save(event);
   }
 
-  async addParticipant(id: number, userId: number): Promise<Event> {
-    const event = await this.eventRepository.findOne({ where: { id } });
-    if (!event) {
-      throw new Error(`Event ${id} not found`);
-    }
-    event.participants.push({ id: userId } as any);
-    return await this.eventRepository.save(event);
-  }
+  // async addParticipant(id: number, userId: number): Promise<Event> {
+  //   const event = await this.eventRepository.findOne({ where: { id } });
+  //   if (!event) {
+  //     throw new Error(`Event ${id} not found`);
+  //   }
+  //   event.participants.push({ id: userId } as any);
+  //   return await this.eventRepository.save(event);
+  // }
 
   async findAll(): Promise<Event[]> {
     const events = await this.eventRepository.find();

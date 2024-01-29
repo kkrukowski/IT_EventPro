@@ -14,24 +14,17 @@ export class Event {
   id: number;
 
   @Column({ name: 'name', length: 100, nullable: false })
-  name: string;
+  title: string;
 
   @Column({ name: 'description', length: 255, nullable: false })
   description: string;
 
   @Column({ name: 'when', type: 'date', nullable: false })
-  when: Date;
+  date: Date;
 
   @Column({ name: 'address', length: 255, nullable: false })
-  address: string;
+  localization: string;
 
   @Column({ name: 'createdAt', type: 'date', nullable: false })
   createdAt: Date;
-
-  @OneToOne(() => User)
-  owner: User;
-
-  @OneToMany(() => User, (user) => user.id)
-  @JoinColumn({ name: 'participantsId' })
-  participants: User[];
 }

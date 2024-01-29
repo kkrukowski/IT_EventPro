@@ -16,3 +16,24 @@ export const downloadPdf = async (ticketData: any) => {
     console.log("error", error);
   }
 };
+
+export const createEvent = async (eventData: any) => {
+  try {
+    const createEventApiUrl = API_URL + "/events";
+    const event = await axios.post(createEventApiUrl, eventData);
+
+    return event;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const getEvents = async () => {
+  try {
+    const getEventsApiUrl = API_URL + "/events";
+    const events = await axios.get(getEventsApiUrl);
+    return events;
+  } catch (error) {
+    console.log("error", error);
+  }
+};

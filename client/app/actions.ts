@@ -13,7 +13,7 @@ export async function createAuthToken(token: string) {
 }
 
 export async function storeUserData(userInfo: any) {
-  const { name, surname, email } = userInfo;
+  const { name, surname, email, role } = userInfo;
   // Add userinfo to cookies
   cookies().set("userName", name, {
     maxAge: 60 * 60,
@@ -24,10 +24,14 @@ export async function storeUserData(userInfo: any) {
   cookies().set("userEmail", email, {
     maxAge: 60 * 60,
   });
+  cookies().set("userRole", role, {
+    maxAge: 60 * 60,
+  });
   if (
     cookies().get("userName") &&
     cookies().get("userSurname") &&
-    cookies().get("userEmail")
+    cookies().get("userEmail") &&
+    cookies().get("userRole")
   ) {
     return true;
   }
@@ -38,6 +42,7 @@ export async function getUserData() {
     name: cookies().get("userName")?.value,
     surname: cookies().get("userSurname")?.value,
     email: cookies().get("userEmail")?.value,
+    role: cookies().get("userRole")?.value,
   };
   return userData;
 }
@@ -46,6 +51,7 @@ export async function removeUserData() {
   cookies().delete("userName");
   cookies().delete("userSurname");
   cookies().delete("userEmail");
+  cookies().delete("userRole");
   cookies().delete("authToken");
   return true;
 }

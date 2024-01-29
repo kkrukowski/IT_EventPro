@@ -4,15 +4,12 @@ import { Button, Checkbox, Dropdown, Label, TextInput } from "flowbite-react";
 import { HiKey, HiMail, HiUser } from "react-icons/hi";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { RegisterUser } from "../api/auth/routes";
-import Heading from "../components/Heading";
 
 const schema = yup.object().shape({
   name: yup.string().required("Imie jest wymagame"),
