@@ -61,3 +61,12 @@ export async function removeUserData() {
   cookies().delete("userId");
   return true;
 }
+
+export async function removeUserDataNoToken() {
+  cookies().delete("userName");
+  cookies().delete("userSurname");
+  cookies().delete("userEmail");
+  cookies().delete("userRole");
+  cookies().delete("userId");
+  return true;
+}

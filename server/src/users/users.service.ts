@@ -47,12 +47,21 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    console.log('id', id);
     const user = await this.userRepository.findOne({ where: { id } });
     console.log('updateUserDto', updateUserDto);
     if (!user) {
       throw new Error(`User ${id} not found`);
     }
-    return this.userRepository.save({ ...user, ...updateUserDto });
+    if (updateUserDto.password) {
+      updateUserDto.password = bcrypt.hashSync(updateUserDto.password, 10);
+    }
+    const updatedUser = await this.userRepository.save({
+      ...user,
+      ...updateUserDto,
+    });
+    console.log('updatedUser', updatedUser);
+    return updatedUser;
   }
 
   async remove(id: number): Promise<{ affected: number }> {

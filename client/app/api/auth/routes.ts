@@ -84,3 +84,25 @@ export const getUserEvents = async (userId: any) => {
   });
   return getUserEvents;
 };
+
+export const updateUser = async (userId: any, userData: any) => {
+  Object.keys(userData).forEach(
+    (key) => userData[key] === "" && delete userData[key]
+  );
+  console.log("userData", userData);
+  const updateUserApiUrl = API_URL + `/users/${userId}`;
+  const updateUser = await fetch(updateUserApiUrl, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  }).then(async (response) => {
+    if (response.status === 200) {
+      const data = await response.json();
+
+      return data;
+    }
+  });
+  return updateUser;
+};

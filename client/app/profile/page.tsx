@@ -9,8 +9,12 @@ import ProfileUserEvents from "../components/ProfileUserEvents";
 
 export default async function Profile() {
   const userData = await getUserData();
-  const userEvents = await getUserEvents(userData.id);
-  const userEventsData = await getEventData(userEvents);
+  let userEventsData = [];
+  if (userData.role == "ADMIN") {
+    const userEvents = await getUserEvents(userData.id);
+    userEventsData = await getEventData(userEvents);
+  }
+
   if (cookies().get("authToken") == undefined) {
     redirect("/login");
   }

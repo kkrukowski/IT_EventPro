@@ -4,16 +4,11 @@ import { Button, Checkbox, Dropdown, Label, TextInput } from "flowbite-react";
 import { HiKey, HiMail, HiUser } from "react-icons/hi";
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
-import { cookies } from "next/headers";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
-import { getUserData } from "../actions";
-import Heading from "../components/Heading";
+import { storeUserData } from "../actions";
+import { LoginUser, updateUser } from "../api/auth/routes";
+import Login from "../login/page";
 
 const schema = yup.object().shape(
   {
@@ -37,7 +32,12 @@ const schema = yup.object().shape(
   [["password", "password"]]
 );
 
-interface IFormInput {}
+interface IFormInput {
+  name: string;
+  surname: string;
+  password: string;
+  repassword: string;
+}
 
 export default function ProfileForm({ userData }: { userData: any }) {
   const form = useForm({
@@ -50,25 +50,33 @@ export default function ProfileForm({ userData }: { userData: any }) {
     formState: { errors },
   } = form;
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    const userData = {};
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    const updateUserData = {
+      name: data?.name,
+      surname: data?.surname,
+      password: data?.password,
+    };
 
-    // axios
-    //   .put(process.env.NEXT_PUBLIC_API_URL + "/users", userData)
-    //   .then((res) => {
-    //     if (res.status === 201) {
-    //       console.log("User created");
-    //       router.push("/profile");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response.data.message);
-    //   });
+    const updatedUser = await updateUser(userData.id, updateUserData);
+
+    if (updatedUser) {
+      await storeUserData(updatedUser);
+      window.location.reload();
+    }
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((data) => {
+        const formData: IFormInput = {
+          name: data.name || "",
+          surname: data.surname || "",
+          password: data.password || "",
+          repassword: data.repassword || "",
+        };
+
+        onSubmit(formData);
+      })}
       className="flex max-w-md flex-col gap-4 w-[400px]"
     >
       <div className="grid md:grid-cols-2 md:gap-6">
@@ -82,7 +90,7 @@ export default function ProfileForm({ userData }: { userData: any }) {
             type="text"
             icon={HiUser}
             placeholder={userData.name}
-            {...register("name", { required: true })}
+            {...register("name", { required: false })}
             color={errors.name && "failure"}
             helperText={errors.name?.message}
           />
@@ -97,7 +105,7 @@ export default function ProfileForm({ userData }: { userData: any }) {
             type="text"
             icon={HiUser}
             placeholder={userData.surname}
-            {...register("surname", { required: true })}
+            {...register("surname", { required: false })}
             color={errors.surname && "failure"}
             helperText={errors.surname?.message}
           />
@@ -127,7 +135,7 @@ export default function ProfileForm({ userData }: { userData: any }) {
           type="password"
           icon={HiKey}
           placeholder="*****"
-          {...register("password", { required: true })}
+          {...register("password", { required: false })}
           color={errors.password && "failure"}
           helperText={errors.password?.message}
         />
@@ -146,7 +154,7 @@ export default function ProfileForm({ userData }: { userData: any }) {
           type="password"
           icon={HiKey}
           placeholder="*****"
-          {...register("repassword", { required: true })}
+          {...register("repassword", { required: false })}
           color={errors.repassword && "failure"}
           helperText={errors.repassword?.message}
         />
