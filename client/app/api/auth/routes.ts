@@ -36,6 +36,7 @@ export const RegisterUser = async (userData: any) => {
 
 export const LoginUser = async (userData: any) => {
   const loginApiUrl = API_URL + "/auth/login";
+  console.log(loginApiUrl)
   const loginUser = await fetch(loginApiUrl, {
     method: "POST",
     headers: {

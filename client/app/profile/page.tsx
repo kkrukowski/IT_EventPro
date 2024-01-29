@@ -25,12 +25,15 @@ export default async function Profile() {
         <Heading title="Profil" />
         <ProfileForm userData={userData} />
       </div>
-      {userData.role == "ADMIN" && (
+      {userData.role == "ADMIN" && userEventsData ? (
         <div className="w-fit rounded-xl bg-gray-800 mt-10 p-10">
           <Heading title="Twoje wydarzenia" />
           <ProfileUserEvents eventsData={userEventsData} />
         </div>
-      )}
+      ) : <div className="w-fit rounded-xl bg-gray-800 mt-10 p-10">
+      <Heading title="Twoje wydarzenia" />
+      <p>Nie masz utworzonych wydarzeń 😥</p>
+    </div>}
     </section>
   );
 }

@@ -5,7 +5,7 @@ import EventItem from "./EventItem";
 export default function EventsList(props: { events: any; userData: any }) {
   return (
     <ul className="flex flex-col gap-4">
-      {props.events.map((event: any) => (
+      {props.events ? props.events.map((event: any) => (
         <EventItem
           key={event.id}
           eventTitle={event.title}
@@ -14,7 +14,8 @@ export default function EventsList(props: { events: any; userData: any }) {
           eventLoc={event.localization}
           userData={props.userData}
         />
-      ))}
+      )) : <p>Brak wydarzeń</p>}
+      
     </ul>
   );
 }
