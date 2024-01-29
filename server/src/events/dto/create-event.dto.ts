@@ -15,5 +15,8 @@ export class CreateEventDto {
   @IsNotEmpty({ message: 'Adres jest wymagany' })
   localization: string;
 
+  @IsNotEmpty({ message: 'User ID jest wymagany' })
+  userId: number;
+
   createdAt: Date;
 }

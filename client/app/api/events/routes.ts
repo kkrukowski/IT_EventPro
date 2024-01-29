@@ -21,18 +21,29 @@ export const createEvent = async (eventData: any) => {
   try {
     const createEventApiUrl = API_URL + "/events";
     const event = await axios.post(createEventApiUrl, eventData);
-
-    return event;
+    if (event) {
+      return true;
+    }
   } catch (error) {
-    console.log("error", error);
+    console.log("error");
   }
 };
 
 export const getEvents = async () => {
   try {
-    const getEventsApiUrl = API_URL + "/events";
+    const getEventsApiUrl = API_URL + `/events/`;
     const events = await axios.get(getEventsApiUrl);
     return events;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const getEventData = async (eventId: any) => {
+  try {
+    const getEventsApiUrl = API_URL + `/events/${eventId}`;
+    const events = await axios.get(getEventsApiUrl);
+    return events.data;
   } catch (error) {
     console.log("error", error);
   }

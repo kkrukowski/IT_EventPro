@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Event } from '../../events/entities/event.entity';
 
 @Entity('users')
 export class User {
@@ -20,9 +27,13 @@ export class User {
   @Column({ name: 'role', length: 100, nullable: false, default: 'USER' })
   role: string;
 
-  @Column({ name: 'organizationId', nullable: true })
-  organizationId: number;
-
   @Column({ name: 'createdAt', type: 'date', nullable: false })
   createdAt: Date;
+
+  @Column({ name: 'eventsId', nullable: true })
+  eventsId: number;
+
+  @ManyToOne(() => Event, (event) => event.organizator)
+  @JoinColumn({ name: 'eventsId' })
+  events: Event;
 }

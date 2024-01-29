@@ -11,7 +11,7 @@ export default function EventItem(props: {
   eventDesc: string;
   eventDate: string;
   eventLoc: string;
-  userData: any;
+  userData?: any;
 }) {
   const downloadPdfHandler = async () => {
     const ticketData = {
@@ -48,7 +48,7 @@ export default function EventItem(props: {
         </div>
         {props.userData?.role == "USER" && (
           <div className="flex">
-            <Button className="w-fit mt-5 mr-5">Zapisz się</Button>
+            {/* <Button className="w-fit mt-5 mr-5">Zapisz się</Button> */}
             <Button
               color="blue"
               className="w-fit mt-5"

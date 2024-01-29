@@ -31,8 +31,6 @@ export const RegisterUser = async (userData: any) => {
       console.log(error);
     });
 
-  console.log(registerUser);
-
   return registerUser;
 };
 
@@ -68,4 +66,21 @@ export const LoginUser = async (userData: any) => {
 
 export const LogoutUser = async () => {
   return await removeUserData();
+};
+
+export const getUserEvents = async (userId: any) => {
+  const getUserApiUrl = API_URL + `/users/${userId}`;
+  const getUserEvents = await fetch(getUserApiUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then(async (response) => {
+    if (response.status === 200) {
+      const data = await response.json();
+      const eventsId = data.eventsId;
+      return eventsId;
+    }
+  });
+  return getUserEvents;
 };

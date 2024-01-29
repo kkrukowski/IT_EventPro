@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { createReadStream } from 'fs';
+import { User } from 'src/users/entities/user.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { Event } from './entities/event.entity';
 import { EventsService } from './events.service';
@@ -22,7 +23,7 @@ export class EventsController {
   constructor(private eventsService: EventsService) {}
 
   @Post()
-  create(@Body(ValidationPipe) createEventDto: CreateEventDto): Promise<Event> {
+  create(@Body(ValidationPipe) createEventDto: CreateEventDto): Promise<User> {
     return this.eventsService.create(createEventDto);
   }
 

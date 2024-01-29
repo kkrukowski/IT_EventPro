@@ -1,9 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import * as PDFDocument from 'pdfkit';
 import ShortUniqueId from 'short-unique-id';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
+import { UsersService } from '../users/users.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { Event } from './entities/event.entity';
 
@@ -14,23 +16,23 @@ export class EventsService {
   constructor(
     @InjectRepository(Event)
     private readonly eventRepository: Repository<Event>,
+    @Inject(UsersService)
+    private readonly usersService: UsersService,
   ) {}
 
-  async create(createEventDto: CreateEventDto): Promise<Event> {
+  async create(createEventDto: CreateEventDto): Promise<User> {
     const nowDate = new Date();
     createEventDto.createdAt = nowDate;
     const event = this.eventRepository.create(createEventDto);
-    return await this.eventRepository.save(event);
+    if (!event) {
+      throw new Error('Event not created');
+    }
+    const savedEvent = await this.eventRepository.save(event);
+    const updatedUser = await this.usersService.update(createEventDto.userId, {
+      events: savedEvent,
+    });
+    return updatedUser;
   }
-
-  // async addParticipant(id: number, userId: number): Promise<Event> {
-  //   const event = await this.eventRepository.findOne({ where: { id } });
-  //   if (!event) {
-  //     throw new Error(`Event ${id} not found`);
-  //   }
-  //   event.participants.push({ id: userId } as any);
-  //   return await this.eventRepository.save(event);
-  // }
 
   async findAll(): Promise<Event[]> {
     const events = await this.eventRepository.find();

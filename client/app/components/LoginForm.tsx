@@ -87,12 +87,6 @@ export default function LoginForm() {
           helperText={errors.password?.message}
         />
       </div>
-      <div className="flex items-center gap-2">
-        <Checkbox id="remember" />
-        <Label htmlFor="remember" className="text-white">
-          Zapamiętaj mnie
-        </Label>
-      </div>
       <Button type="submit">Zaloguj</Button>
       <p>
         Nie masz konta?{" "}

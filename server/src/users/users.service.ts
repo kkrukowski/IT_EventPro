@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
+import { Event } from '../events/entities/event.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -12,16 +13,17 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const nowDate = new Date();
     createUserDto.createdAt = nowDate;
+    createUserDto.events = null;
     createUserDto.password = bcrypt.hashSync(createUserDto.password, 10);
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }
 
-  findOne(id: number): Promise<User> {
-    const user = this.userRepository.findOne({ where: { id } });
+  async findOne(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new Error(`User ${id} not found`);
     }
@@ -46,6 +48,7 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
+    console.log('updateUserDto', updateUserDto);
     if (!user) {
       throw new Error(`User ${id} not found`);
     }

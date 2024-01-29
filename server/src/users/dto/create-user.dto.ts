@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
+import { Event } from '../../events/entities/event.entity';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: 'Imię jest wymagane' })
@@ -20,4 +21,6 @@ export class CreateUserDto {
 
   @IsNotEmpty({ message: 'Data utworzenia jest wymagana' })
   createdAt: Date;
+
+  events: Event;
 }

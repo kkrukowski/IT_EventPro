@@ -24,7 +24,7 @@ interface IFormInput {
   date: string;
 }
 
-export default function EventForm() {
+export default function EventForm(props: { userData: any }) {
   const router = useRouter();
 
   const form = useForm<IFormInput>({
@@ -39,6 +39,7 @@ export default function EventForm() {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const eventData = {
+      userId: props.userData.id,
       title: data.title,
       description: data.description,
       date: data.date,

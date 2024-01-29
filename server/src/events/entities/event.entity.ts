@@ -1,3 +1,4 @@
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
@@ -6,14 +7,13 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
 
 @Entity('events')
 export class Event {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'name', length: 100, nullable: false })
+  @Column({ name: 'title', length: 100, nullable: false })
   title: string;
 
   @Column({ name: 'description', length: 255, nullable: false })
@@ -27,4 +27,7 @@ export class Event {
 
   @Column({ name: 'createdAt', type: 'date', nullable: false })
   createdAt: Date;
+
+  @OneToMany(() => User, (user) => user.events)
+  organizator: User;
 }
